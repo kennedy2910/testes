@@ -30,7 +30,7 @@ export default function PremiumPage() {
             ? rawStripeSessionId
             : null
 
-        // 1️⃣ Se voltou da Stripe, marca como pago no Xano
+        // 1️⃣ Marca como pago (fallback ao webhook)
         if (stripeSessionId) {
           const markRes = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/sessions/mark_paid`,
@@ -96,23 +96,47 @@ export default function PremiumPage() {
       )
 
       const text = await res.text()
-      console.log("STATUS:", res.status)
-      console.log("RESPONSE:", text)
-
-      if (!res.ok) {
-        throw new Error(text)
-      }
+      if (!res.ok) throw new Error(text)
 
       const data = JSON.parse(text)
-
-      if (!data.url) {
-        throw new Error("Checkout URL not returned")
-      }
+      if (!data.url) throw new Error("Checkout URL not returned")
 
       window.location.href = data.url
     } catch (err) {
       console.error("PAYMENT ERROR:", err)
-      alert("Erro ao iniciar o pagamento (ver console)")
+      alert("Erro ao iniciar o pagamento")
+    }
+  }
+
+  const downloadPdf = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_PDF_SERVICE_URL}/generate-pdf`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(report)
+        }
+      )
+
+      if (!res.ok) {
+        throw new Error("Erro ao gerar PDF")
+      }
+
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+
+      const a = document.createElement("a")
+      a.href = url
+      a.download = "relatorio-premium.pdf"
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error(err)
+      alert("Erro ao baixar o PDF")
     }
   }
 
@@ -124,7 +148,9 @@ export default function PremiumPage() {
     return (
       <div style={{ textAlign: "center", marginTop: 40 }}>
         <p>Relatório premium bloqueado</p>
-        <button onClick={startPayment}>Desbloquear relatório premium</button>
+        <button onClick={startPayment}>
+          Desbloquear relatório premium
+        </button>
       </div>
     )
   }
@@ -146,6 +172,23 @@ export default function PremiumPage() {
       )}
 
       <p style={{ fontSize: 12, opacity: 0.7 }}>{report.note}</p>
+
+      <button
+        style={{
+          marginTop: 32,
+          padding: "14px 24px",
+          fontSize: 16,
+          fontWeight: 600,
+          borderRadius: 6,
+          border: "none",
+          cursor: "pointer",
+          backgroundColor: "#111",
+          color: "#fff"
+        }}
+        onClick={downloadPdf}
+      >
+        📄 Baixar relatório em PDF
+      </button>
     </div>
   )
 }

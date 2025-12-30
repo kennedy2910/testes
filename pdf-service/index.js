@@ -1,88 +1,71 @@
-const express = require("express");
-const { chromium } = require("playwright");
-const fs = require("fs");
-const path = require("path");
+const express = require("express")
+const cors = require("cors")
+const bodyParser = require("body-parser")
+const PDFDocument = require("pdfkit")
 
-const app = express();
-app.use(express.json());
+const app = express()
+const PORT = 3000
 
-// pasta tmp
-const TMP_DIR = path.join(__dirname, "tmp");
-if (!fs.existsSync(TMP_DIR)) {
-  fs.mkdirSync(TMP_DIR);
-}
+// ✅ CORS correto (resolve erro do browser)
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+)
 
-// expor /tmp publicamente
-app.use("/tmp", express.static(TMP_DIR));
+app.use(bodyParser.json({ limit: "10mb" }))
 
-app.post("/generate-pdf", async (req, res) => {
+app.get("/", (req, res) => {
+  res.send("PDF Service OK")
+})
+
+app.post("/generate-pdf", (req, res) => {
   try {
-    const { summary } = req.body;
+    const report = req.body
 
-    if (!summary) {
-      return res.status(400).json({ error: "summary is required" });
+    const doc = new PDFDocument({ margin: 50 })
+    const buffers = []
+
+    doc.on("data", buffers.push.bind(buffers))
+    doc.on("end", () => {
+      const pdfBuffer = Buffer.concat(buffers)
+
+      res.setHeader("Content-Type", "application/pdf")
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=relatorio-premium.pdf"
+      )
+
+      res.end(pdfBuffer)
+    })
+
+    // ===== CONTEÚDO DO PDF =====
+    doc.fontSize(18).text(report.title || "Relatório Premium", {
+      align: "center"
+    })
+
+    doc.moveDown()
+    doc.fontSize(12).text(report.overview || "")
+
+    if (report.complement) {
+      doc.moveDown()
+      doc.fontSize(14).text("Perfil Complementar")
+      doc.moveDown(0.5)
+      doc.fontSize(12).text(report.complement)
     }
 
-    const html = `
-      <!DOCTYPE html>
-      <html lang="pt">
-        <head>
-          <meta charset="UTF-8" />
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              padding: 40px;
-            }
-            h1 {
-              color: #222;
-            }
-            ul {
-              margin-top: 16px;
-            }
-            li {
-              margin-bottom: 8px;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>${summary.title}</h1>
-          <p>${summary.summary}</p>
-          <ul>
-            ${(summary.highlights || [])
-              .map(item => `<li>${item}</li>`)
-              .join("")}
-          </ul>
-        </body>
-      </html>
-    `;
+    doc.moveDown()
+    doc.fontSize(10).opacity(0.7).text(report.note || "")
 
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-
-    await page.setContent(html, { waitUntil: "networkidle" });
-
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true
-    });
-
-    await browser.close();
-
-    const filename = `report_${Date.now()}.pdf`;
-    const filePath = path.join(TMP_DIR, filename);
-
-    fs.writeFileSync(filePath, pdfBuffer);
-
-    return res.json({
-      filename,
-      url: `http://localhost:3000/tmp/${filename}`
-    });
+    doc.end()
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to generate PDF" });
+    console.error(err)
+    res.status(500).json({ error: "Erro ao gerar PDF" })
   }
-});
+})
 
-app.listen(3000, () => {
-  console.log("✅ PDF service running at http://localhost:3000");
-});
+app.listen(PORT, () => {
+  console.log(`✅ PDF service running at http://localhost:${PORT}`)
+})
