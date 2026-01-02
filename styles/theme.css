@@ -1,0 +1,12 @@
+:root {
+  --primary: #0ea5e9;
+  --secondary: #22c55e;
+  --dark: #0f172a;
+  --light: #f8fafc;
+  --gray: #64748b;
+
+  --gradient-main: linear-gradient(135deg, #0ea5e9, #22c55e);
+
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}

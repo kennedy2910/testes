@@ -26,7 +26,6 @@ export default function PremiumPage() {
         const secondaryProfile = params.get("secondary_profile");
         const stripeSessionId = params.get("stripe_session_id");
 
-        // 1️⃣ Se veio do Stripe, valida/desbloqueia primeiro
         if (stripeSessionId) {
           const unlockResult = await unlockPremiumReport(
             numericSessionId,
@@ -40,7 +39,6 @@ export default function PremiumPage() {
           }
         }
 
-        // 2️⃣ Buscar relatório premium (já autorizado)
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/premium/report` +
             `?session_id=${numericSessionId}` +
@@ -74,7 +72,7 @@ export default function PremiumPage() {
       if (!report) return;
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_PDF_SERVICE_URL}/generate-pdf`,
+        `${process.env.NEXT_PUBLIC_PDF_SERVICE_URL || "http://localhost:3000"}/generate-pdf`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -101,52 +99,111 @@ export default function PremiumPage() {
   };
 
   if (loading) {
-    return <p style={{ textAlign: "center", marginTop: 40 }}>Loading...</p>;
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: 40,
+          fontSize: "1rem",
+        }}
+      >
+        Carregando relatório...
+      </p>
+    );
   }
 
   if (locked) {
     return (
-      <div style={{ textAlign: "center", marginTop: 40 }}>
-        <p>Relatório premium bloqueado.</p>
-        <p>Conclua o pagamento para liberar o acesso.</p>
+      <div
+        style={{
+          maxWidth: 520,
+          margin: "60px auto",
+          padding: "0 16px",
+          textAlign: "center",
+        }}
+      >
+        <h2 style={{ marginBottom: 12 }}>Relatório premium bloqueado</h2>
+        <p style={{ opacity: 0.8 }}>
+          Conclua o pagamento para liberar o acesso ao relatório completo.
+        </p>
       </div>
     );
   }
 
   if (!report) {
-    return <p style={{ textAlign: "center" }}>No data available.</p>;
+    return (
+      <p style={{ textAlign: "center", marginTop: 40 }}>
+        Nenhum dado disponível.
+      </p>
+    );
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "40px auto" }}>
-      <h2>{report.title}</h2>
-      <p>{report.overview}</p>
+    <div
+      style={{
+        maxWidth: 680,
+        margin: "40px auto",
+        padding: "0 16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <header>
+        <h2 style={{ marginBottom: 8 }}>{report.title}</h2>
+        <p style={{ lineHeight: 1.6 }}>{report.overview}</p>
+      </header>
 
       {report.complement && (
-        <>
-          <h3>Perfil complementar</h3>
-          <p>{report.complement}</p>
-        </>
+        <section>
+          <h3 style={{ marginBottom: 6 }}>Perfil complementar</h3>
+          <p style={{ lineHeight: 1.6 }}>{report.complement}</p>
+        </section>
       )}
 
-      <p style={{ fontSize: 12, opacity: 0.7 }}>{report.note}</p>
+      <p
+        style={{
+          fontSize: "0.75rem",
+          opacity: 0.7,
+          marginTop: 12,
+        }}
+      >
+        {report.note}
+      </p>
 
       <button
+        onClick={downloadPdf}
+        aria-label="Baixar relatório premium em PDF"
         style={{
           marginTop: 32,
-          padding: "14px 24px",
-          fontSize: 16,
+          alignSelf: "center",
+          padding: "14px 28px",
+          fontSize: "1rem",
           fontWeight: 600,
-          borderRadius: 6,
+          borderRadius: 8,
           border: "none",
           cursor: "pointer",
           backgroundColor: "#111",
           color: "#fff",
+          minWidth: 240,
+          transition: "background-color 0.2s ease, transform 0.1s ease",
         }}
-        onClick={downloadPdf}
+        onMouseOver={(e) =>
+          (e.currentTarget.style.backgroundColor = "#000")
+        }
+        onMouseOut={(e) =>
+          (e.currentTarget.style.backgroundColor = "#111")
+        }
+        onMouseDown={(e) =>
+          (e.currentTarget.style.transform = "scale(0.98)")
+        }
+        onMouseUp={(e) =>
+          (e.currentTarget.style.transform = "scale(1)")
+        }
       >
         📄 Baixar relatório em PDF
       </button>
     </div>
   );
 }
+

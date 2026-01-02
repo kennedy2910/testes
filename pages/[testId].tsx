@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
-import { startSession, nextQuestion } from "../../lib/api"
-import { Question } from "../../lib/types"
+import { startSession, nextQuestion } from "../lib/api"
+import { Question } from "../lib/types"
 
 // =========================
 // FIXED LIKERT OPTIONS

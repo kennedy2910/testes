@@ -1,114 +1,92 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 
-type Test = {
-  id: number;
-  title?: string;
-  name?: string;
-  description?: string;
-  created_at?: number | string;
-};
+const TESTS = [
+  {
+    id: 1,
+    title: "Perfil Comportamental",
+    description: "Descubra seu perfil dominante e como você toma decisões.",
+    badge: "Popular"
+  },
+  {
+    id: 2,
+    title: "Teste Vocacional",
+    description: "Identifique carreiras alinhadas com seu perfil.",
+    badge: "Gratuito"
+  },
+  {
+    id: 3,
+    title: "Inteligência Emocional",
+    description: "Entenda como você lida com emoções e pressão.",
+    badge: "Novo"
+  },
+  {
+    id: 4,
+    title: "Liderança",
+    description: "Avalie seu potencial de liderança.",
+    badge: "Popular"
+  },
+  {
+    id: 5,
+    title: "Comunicação",
+    description: "Descubra seu estilo de comunicação.",
+    badge: "Gratuito"
+  },
+  {
+    id: 6,
+    title: "Tomada de Decisão",
+    description: "Veja como você decide sob pressão.",
+    badge: "Em alta"
+  }
+]
 
 export default function Home() {
-  const router = useRouter();
-
-  const [tests, setTests] = useState<Test[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    console.log("INDEX useEffect RUNNING");
-
-    async function loadTests() {
-      try {
-        setError(null);
-        console.log("Calling /tests/list ...");
-
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        if (!baseUrl) {
-          throw new Error("NEXT_PUBLIC_API_URL is not set in .env");
-        }
-
-        const res = await fetch(`${baseUrl}/tests/list`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        console.log("Response status:", res.status);
-
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(`Failed to load tests: ${res.status} ${text}`);
-        }
-
-        const data = await res.json();
-        console.log("Raw response:", data);
-
-        const list = Array.isArray(data) ? data : (data?.tests ?? []);
-        setTests(list);
-      } catch (err: any) {
-        console.error("Error loading tests:", err);
-        setError(err?.message || "Failed to load tests");
-        setTests([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadTests();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="mt-10 text-center">
-        <p>Carregando testes...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mt-10 text-center">
-        <p className="text-red-500">{error}</p>
-
-        <button
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-          onClick={() => window.location.reload()}
-        >
-          Voltar
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-3xl mx-auto mt-10 px-4">
-      <h1 className="text-3xl font-bold mb-6">Testes disponíveis</h1>
+    <>
+      <header>
+        <div className="container header-inner">
+          <strong>VocationalHub</strong>
+          <nav>
+            <a href="/">Início</a>
+            <a href="/tests">Testes</a>
+          </nav>
+        </div>
+      </header>
 
-      {tests.length === 0 ? (
-        <p>Não foram encontrados testes.</p>
-      ) : (
-        <ul className="space-y-4">
-          {tests.map((t) => (
-            <li key={t.id} className="border rounded-lg p-4 hover:shadow">
-              <h2 className="text-xl font-semibold">
-                {t.title || t.name || `Test #${t.id}`}
-              </h2>
+      <section className="hero">
+        <h1>Descubra o teste perfeito para você</h1>
+        <p>Testes psicológicos e vocacionais para decisões mais conscientes</p>
+        <button style={{ marginTop: 32, padding: "14px 28px", fontWeight: 700 }}>
+          Começar agora
+        </button>
+      </section>
 
-              {t.description && (
-                <p className="text-gray-600 mt-2">{t.description}</p>
-              )}
+      <section className="section container">
+        <h2>Testes mais populares</h2>
 
-              <button
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-                onClick={() => router.push(`/test/${t.id}`)}
-              >
-                Iniciar Teste
-              </button>
-            </li>
+        <div className="cards-grid home">
+          {[
+            ["Perfil Comportamental", "Popular"],
+            ["Teste Vocacional", "Gratuito"],
+            ["Inteligência Emocional", "Novo"],
+            ["Liderança", "Popular"],
+            ["Teste de QI", "Clássico"],
+            ["Carreira", "Essencial"]
+          ].map(([title, badge]) => (
+            <div className="card" key={title}>
+              <span className="badge">{badge}</span>
+              <h3>{title}</h3>
+              <p>Descubra insights profundos sobre você.</p>
+              <button>Fazer teste</button>
+            </div>
           ))}
-        </ul>
-      )}
-    </div>
-  );
+        </div>
+      </section>
+
+      <footer>
+        <div className="container">
+          <p>© 2026 VocationalHub</p>
+        </div>
+      </footer>
+    </>
+  )
 }

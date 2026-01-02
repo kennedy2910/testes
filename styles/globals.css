@@ -1,40 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+* {
+  box-sizing: border-box;
+}
 
 body {
-  @apply bg-bgLight text-gray-900 font-sans;
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
-/* Layout centrado, estilo myiq */
-.page-container {
-  @apply min-h-screen flex flex-col;
+a {
+  margin-left: 16px;
+  text-decoration: none;
+  color: #2563eb;
 }
 
-.page-main {
-  @apply flex-1 flex justify-center items-start;
-}
-
-.card {
-  @apply bg-white rounded-2xl shadow-md p-8 w-full max-w-xl;
-}
-
-.btn-primary {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full bg-primary text-white font-medium hover:bg-primaryDark transition;
-}
-
-.btn-secondary {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition;
-}
-
-.input {
-  @apply w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
-}
-
-.page-title {
-  @apply text-3xl font-semibold mb-2;
-}
-
-.page-subtitle {
-  @apply text-gray-500 mb-6;
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 16px;
 }
