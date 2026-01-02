@@ -93,7 +93,7 @@
     "id": 661548,
     "type": "table",
     "path": "tables/661548_answer_choice.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "172b6fb61742a3405013d88b42aff2e48bae8cc11e9f00beb68fdeb116aea0be",
     "original": "dGFibGUgYW5zd2VyX2Nob2ljZSB7CiAgYXV0aCA9IGZhbHNlCgogIHNjaGVtYSB7CiAgICBpbnQgaWQKICAgIHRpbWVzdGFtcCBjcmVhdGVkX2F0PwogICAgaW50IHF1ZXN0aW9uX2lkIHsKICAgICAgdGFibGUgPSAicXVlc3Rpb25zIgogICAgfQogIAogICAgdGV4dCBsYWJlbAogICAgdGV4dCB2YWx1ZT8KICAgIGludCBvcmRlcj8KICB9CgogIGluZGV4ID0gWwogICAge3R5cGU6ICJwcmltYXJ5IiwgZmllbGQ6IFt7bmFtZTogImlkIn1dfQogICAge3R5cGU6ICJidHJlZSIsIGZpZWxkOiBbe25hbWU6ICJxdWVzdGlvbl9pZCJ9XX0KICBdCn0="
@@ -102,7 +102,7 @@
     "id": 663508,
     "type": "table",
     "path": "tables/663508_promo_tokens.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "f110be816bc6d09226114d6c1226df8e25f4ba6314dc983cf0cfaf2a2b521992",
     "original": "dGFibGUgcHJvbW9fdG9rZW5zIHsKICBhdXRoID0gZmFsc2UKCiAgc2NoZW1hIHsKICAgIGludCBpZAogICAgdGltZXN0YW1wIGNyZWF0ZWRfYXQ/PW5vdwogIAogICAgLy8gQ8OzZGlnbyDDum5pY28gKGV4OiByYW5kb21TdHJpbmcpCiAgICB0ZXh0IHRva2VuPyBmaWx0ZXJzPXRyaW0KICAKICAgIC8vIFF1YWwgdGVzdGUgZXN0ZSB0b2tlbiBsaWJlcmEgKG91IG51bGwgPSBnZXJhbCkKICAgIGludCB0ZXN0X2lkPwogIAogICAgLy8gUXVhbnRpZGFkZSBtw6F4aW1hIGRlIHVzb3MgKDAgPSBpbGltaXRhZG8pCiAgICBkZWNpbWFsIG1heF91c2VzPwogIAogICAgLy8gUXVhbnRvcyBqw6EgdXNhcmFtCiAgICBkZWNpbWFsIHVzZWRfY291bnQ/CiAgCiAgICAvLyBWYWxpZGFkZSBkYSBwcm9tb8OnYW8KICAgIHRpbWVzdGFtcD8gZXhwaXJlc19hdD8KICB9CgogIGluZGV4ID0gWwogICAge3R5cGU6ICJwcmltYXJ5IiwgZmllbGQ6IFt7bmFtZTogImlkIn1dfQogICAge3R5cGU6ICJidHJlZSIsIGZpZWxkOiBbe25hbWU6ICJjcmVhdGVkX2F0Iiwgb3A6ICJkZXNjIn1dfQogIF0KfQ=="
@@ -111,7 +111,7 @@
     "id": 661547,
     "type": "table",
     "path": "tables/661547_questions.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "c2d0fdca70357359c5489fd5f048e8a0673aca43bb3195424f58ab9190a78b3c",
     "original": "dGFibGUgcXVlc3Rpb25zIHsKICBhdXRoID0gZmFsc2UKCiAgc2NoZW1hIHsKICAgIGludCBpZAogICAgdGltZXN0YW1wIGNyZWF0ZWRfYXQ/CiAgICBpbnQgdGVzdF9pZCB7CiAgICAgIHRhYmxlID0gInRlc3RzIgogICAgfQogIAogICAgdGV4dCBxdWVzdGlvbl90ZXh0CiAgICB0ZXh0IHF1ZXN0aW9uX3R5cGU/CiAgICBpbnQgb3JkZXI/CiAgfQoKICBpbmRleCA9IFsKICAgIHt0eXBlOiAicHJpbWFyeSIsIGZpZWxkOiBbe25hbWU6ICJpZCJ9XX0KICAgIHt0eXBlOiAiYnRyZWUiLCBmaWVsZDogW3tuYW1lOiAidGVzdF9pZCJ9XX0KICBdCn0="
@@ -120,7 +120,7 @@
     "id": 661101,
     "type": "table",
     "path": "tables/661101_recommendations.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "b8580783d7e034e5ae952f85255e667f3e794d1018d7c60d05404a5a87a34861",
     "original": "dGFibGUgcmVjb21tZW5kYXRpb25zIHsKICBhdXRoID0gZmFsc2UKCiAgc2NoZW1hIHsKICAgIGludCBpZAogICAgaW50IHRlc3RfaWQgewogICAgICB0YWJsZSA9ICJ0ZXN0cyIKICAgIH0KICAKICAgIHRleHQgc2NvcmVfbWluPwogICAgdGV4dCBzY29yZV9tYXg/CiAgICB0ZXh0IHJlY29tbWVuZGF0aW9uX3RleHQ/CiAgfQoKICBpbmRleCA9IFsKICAgIHt0eXBlOiAicHJpbWFyeSIsIGZpZWxkOiBbe25hbWU6ICJpZCJ9XX0KICAgIHt0eXBlOiAiZ2luIiwgZmllbGQ6IFt7bmFtZTogInhkbyIsIG9wOiAianNvbmJfcGF0aF9vcCJ9XX0KICBdCn0="
@@ -129,7 +129,7 @@
     "id": 661552,
     "type": "table",
     "path": "tables/661552_session.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "3c4ccaf86f16738b417acff5c0ef9378ba676e036a32917704864c3971c6f409",
     "original": "dGFibGUgc2Vzc2lvbiB7CiAgYXV0aCA9IGZhbHNlCgogIHNjaGVtYSB7CiAgICBpbnQgaWQKICAgIHRpbWVzdGFtcCBjcmVhdGVkX2F0PwogICAgdGV4dCBzdGF0dXM/CiAgfQoKICBpbmRleCA9IFt7dHlwZTogInByaW1hcnkiLCBmaWVsZDogW3tuYW1lOiAiaWQifV19XQp9"
@@ -138,7 +138,7 @@
     "id": 661545,
     "type": "table",
     "path": "tables/661545_tests.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "e95d8c9b8cc4a1b9ad9376f5c9174e9845d4a26ee10b27b31fd75487e20565e4",
     "original": "dGFibGUgdGVzdHMgewogIGF1dGggPSBmYWxzZQoKICBzY2hlbWEgewogICAgaW50IGlkCiAgICB0aW1lc3RhbXAgY3JlYXRlZF9hdD8KICAgIHRleHQgdGl0bGUKICAgIHRleHQgZGVzY3JpcHRpb24/CiAgICB0ZXh0IGNhdGVnb3J5PwogICAgdGV4dCBzdGF0dXM/CiAgfQoKICBpbmRleCA9IFt7dHlwZTogInByaW1hcnkiLCBmaWVsZDogW3tuYW1lOiAiaWQifV19XQp9"
@@ -147,7 +147,7 @@
     "id": 661106,
     "type": "table",
     "path": "tables/661106_users.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "cb1ef88ffeae48a70092a6935f4e32ae6951f4adcc665d95386de084008ea5bc",
     "original": "dGFibGUgdXNlcnMgewogIGF1dGggPSB0cnVlCgogIHNjaGVtYSB7CiAgICBpbnQgaWQKICAgIHRleHQgbmFtZT8KICAgIHRleHQgZW1haWw/CiAgICBwYXNzd29yZCBwYXNzd29yZD8KICAgIHRpbWVzdGFtcD8gY3JlYXRlZF9hdD8KICAKICAgIC8vIEZ1bsOnYW8KICAgIGludCByb2xlPwogIAogICAgLy8gU2Ugw6kgcHJlbWl1bQogICAgYm9vbCBpc19wcmVtaXVtPwogIH0KCiAgaW5kZXggPSBbCiAgICB7dHlwZTogInByaW1hcnkiLCBmaWVsZDogW3tuYW1lOiAiaWQifV19CiAgICB7dHlwZTogImdpbiIsIGZpZWxkOiBbe25hbWU6ICJ4ZG8iLCBvcDogImpzb25iX3BhdGhfb3AifV19CiAgXQp9"
@@ -291,7 +291,7 @@
     "id": 669354,
     "type": "table",
     "path": "tables/669354_orders.xs",
-    "status": "unchanged",
+    "status": "notfound",
     "staged": false,
     "sha256": "10abcd21e3bf83371cc9d0426a3976da10199897265c6e409472c0599055639b",
     "original": "dGFibGUgb3JkZXJzIHsKICBhdXRoID0gZmFsc2UKCiAgc2NoZW1hIHsKICAgIGludCBpZAogICAgdGltZXN0YW1wIGNyZWF0ZWRfYXQ/PW5vdwogICAgdGV4dCBwcm92aWRlcj8gZmlsdGVycz10cmltCiAgICB0ZXh0IHByb3ZpZGVyX3BheW1lbnRfaWQ/IGZpbHRlcnM9dHJpbQogICAgdGV4dCBzdGF0dXM/IGZpbHRlcnM9dHJpbQogICAgZGVjaW1hbCBhbW91bnQ/CiAgICB0ZXh0IGN1cnJlbmN5PyBmaWx0ZXJzPXRyaW0KICAgIHRleHQgcHJvZHVjdF9za3U/IGZpbHRlcnM9dHJpbQogICAgdGltZXN0YW1wPyBwYWlkX2F0PwogIH0KCiAgaW5kZXggPSBbCiAgICB7dHlwZTogInByaW1hcnkiLCBmaWVsZDogW3tuYW1lOiAiaWQifV19CiAgICB7dHlwZTogImJ0cmVlIiwgZmllbGQ6IFt7bmFtZTogImNyZWF0ZWRfYXQiLCBvcDogImRlc2MifV19CiAgXQp9"

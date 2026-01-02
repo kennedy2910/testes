@@ -1,0 +1,117 @@
+architecture_overview:
+  description: >
+    Analise o projeto AppTestes como um todo.
+
+    PRODUZA A RESPOSTA OBRIGATORIAMENTE NO FORMATO ABAIXO
+    (não adicione textos fora desse formato):
+
+    1. RESUMO GERAL
+       - Máximo de 3 frases
+       - Linguagem simples e direta
+
+    2. PRINCIPAIS PROBLEMAS IDENTIFICADOS
+       - Lista curta (bullet points)
+
+    3. FLUXO REAL DO SISTEMA
+       - Passo a passo do usuário do início ao fim
+       - Sem termos genéricos
+
+    4. RECOMENDAÇÕES GERAIS
+       - Apenas recomendações práticas
+
+  expected_output: >
+    Um resumo claro, curto e técnico, em português,
+    explicando como o AppTestes funciona e onde estão os principais problemas.
+
+  agent: architect
+
+
+backend_analysis:
+  description: >
+    Analise APENAS o backend do AppTestes.
+
+    PRODUZA A RESPOSTA EXATAMENTE NO FORMATO ABAIXO:
+
+    RESUMO GERAL
+    (máx. 3 frases explicando os principais problemas do backend)
+
+    ARQUIVOS AFETADOS
+    - lista de arquivos reais do projeto
+
+    ANÁLISE POR ARQUIVO
+
+    [NOME DO ARQUIVO]
+    Problema:
+    (descrição clara do problema)
+
+    Correção recomendada:
+    (o que precisa ser feito)
+
+    Mudanças sugeridas:
+    - funções a alterar
+    - rotas a ajustar
+    - validações a adicionar ou remover
+
+    INSTRUÇÕES PARA IMPLEMENTAÇÃO (CONTINUE)
+    (texto pronto para ser colado no Continue.dev)
+
+  expected_output: >
+    Um relatório técnico, curto e acionável,
+    pronto para ser usado como pre-prompt no Continue.dev.
+
+  agent: backend_specialist
+
+
+qa_flow_analysis:
+  description: >
+    Simule o comportamento real de um usuário no AppTestes
+    (teste, pagamento, desbloqueio, retorno, recarregamento).
+
+    PRODUZA A RESPOSTA NO FORMATO:
+
+    RESUMO GERAL
+
+    FLUXOS PROBLEMÁTICOS IDENTIFICADOS
+    - lista objetiva
+
+    BUGS DETECTADOS
+
+    [BUG]
+    Como reproduzir:
+    Por que acontece:
+    Impacto para o usuário:
+
+    INSTRUÇÕES PARA IMPLEMENTAÇÃO (CONTINUE)
+
+  expected_output: >
+    Lista clara de bugs de fluxo,
+    explicados em linguagem simples e acionável.
+
+  agent: qa_specialist
+
+
+frontend_ux_analysis:
+  description: >
+    Analise o frontend do AppTestes com foco em UX e fluxo mental do usuário.
+
+    PRODUZA A RESPOSTA NO FORMATO:
+
+    RESUMO GERAL
+
+    TELAS / COMPONENTES PROBLEMÁTICOS
+    - lista
+
+    PROBLEMAS IDENTIFICADOS
+
+    [TELA OU COMPONENTE]
+    Problema:
+    Consequência para o usuário:
+    Sugestão de melhoria:
+
+    INSTRUÇÕES PARA IMPLEMENTAÇÃO (CONTINUE)
+
+  expected_output: >
+    Um relatório curto e claro,
+    focado em melhorar a experiência do usuário.
+
+  agent: frontend_specialist

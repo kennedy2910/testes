@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "title": "GPT-4.1",
+      "provider": "openai",
+      "model": "openai/gpt-4.1"
+    }
+  ],
+  "context": {
+    "codebase": true
+  }
+}

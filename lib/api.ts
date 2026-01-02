@@ -38,6 +38,33 @@ export async function nextQuestion(
   return res.data
 }
 
+/**
+ * Mark session as paid/unlock premium report
+ */
+export async function markPaid(sessionId: number, stripeSessionId: string) {
+  try {
+    const res = await api.post("/sessions/mark_paid", {
+      session_id: sessionId,
+      stripe_session_id: stripeSessionId,
+    });
+    console.log("[API] markPaid response:", res.data);
+    return { success: res.status === 200, ...res.data };
+  } catch (err: any) {
+    console.error("[API] markPaid error:", err?.response?.data || err.message);
+    throw new Error(err?.response?.data?.message || "Falha no desbloqueio");
+  }
+}
+
+// Função para desbloquear relatório premium/marcar como pago
+export async function unlockPremiumReport(sessionId: number, stripeSessionId: string) {
+  const res = await api.post("/sessions/mark_paid", {
+    session_id: sessionId,
+    stripe_session_id: stripeSessionId,
+  });
+  // Resposta explícita 'unlocked' síncrona
+  return { unlocked: res.status === 200 };
+}
+
 /* ================================
    QUESTIONS
 ================================ */
@@ -51,3 +78,4 @@ export async function getQuestionChoices(
   })
   return res.data
 }
+

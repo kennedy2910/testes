@@ -1,162 +1,120 @@
-import { useEffect, useState } from "react"
-import { useRouter } from "next/router"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { unlockPremiumReport } from "../../lib/api";
 
 export default function PremiumPage() {
-  const router = useRouter()
-  const { sessionId } = router.query
+  const router = useRouter();
+  const { sessionId } = router.query;
 
-  const [loading, setLoading] = useState(true)
-  const [locked, setLocked] = useState(false)
-  const [report, setReport] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true);
+  const [locked, setLocked] = useState(true);
+  const [report, setReport] = useState<any | null>(null);
+  const [processed, setProcessed] = useState(false);
 
   useEffect(() => {
-    if (!sessionId) return
+    if (!sessionId || processed) return;
 
-    const numericSessionId = Number(sessionId)
-    if (!numericSessionId) return
+    const numericSessionId = Number(sessionId);
+    if (!numericSessionId) return;
+
+    setProcessed(true);
 
     const run = async () => {
       try {
-        const params = new URLSearchParams(window.location.search)
+        const params = new URLSearchParams(window.location.search);
+        const primaryProfile = params.get("primary_profile");
+        const secondaryProfile = params.get("secondary_profile");
+        const stripeSessionId = params.get("stripe_session_id");
 
-        const primaryProfile = params.get("primary_profile")
-        const secondaryProfile = params.get("secondary_profile")
-
-        const rawStripeSessionId = params.get("stripe_session_id")
-        const stripeSessionId =
-          rawStripeSessionId &&
-          rawStripeSessionId !== "null" &&
-          rawStripeSessionId !== "undefined"
-            ? rawStripeSessionId
-            : null
-
-        // 1️⃣ Marca como pago (fallback ao webhook)
+        // 1️⃣ Se veio do Stripe, valida/desbloqueia primeiro
         if (stripeSessionId) {
-          const markRes = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/sessions/mark_paid`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                session_id: numericSessionId,
-                stripe_session_id: stripeSessionId
-              })
-            }
-          )
+          const unlockResult = await unlockPremiumReport(
+            numericSessionId,
+            stripeSessionId
+          );
 
-          if (!markRes.ok) {
-            const err = await markRes.text()
-            throw new Error("mark_paid failed: " + err)
+          if (!unlockResult?.unlocked) {
+            setLocked(true);
+            setReport(null);
+            return;
           }
         }
 
-        // 2️⃣ Buscar relatório premium
+        // 2️⃣ Buscar relatório premium (já autorizado)
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/premium/report` +
             `?session_id=${numericSessionId}` +
             `&primary_profile=${primaryProfile}` +
             `&secondary_profile=${secondaryProfile}`
-        )
+        );
 
-        if (res.status === 403) {
-          setLocked(true)
-          return
+        if (res.status === 403 || !res.ok) {
+          setLocked(true);
+          setReport(null);
+          return;
         }
 
-        if (!res.ok) {
-          throw new Error("Failed to load premium report")
-        }
-
-        const data = await res.json()
-        setReport(data.report)
-        setLocked(false)
+        const data = await res.json();
+        setReport(data.report);
+        setLocked(false);
       } catch (err) {
-        console.error(err)
-        setLocked(true)
+        console.error("Erro ao carregar relatório premium:", err);
+        setLocked(true);
+        setReport(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    run()
-  }, [sessionId])
-
-  const startPayment = async () => {
-    try {
-      const numericSessionId = Number(sessionId)
-      if (!numericSessionId) return
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_FASTAPI_URL}/v1/stripe/create-checkout`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ session_id: numericSessionId })
-        }
-      )
-
-      const text = await res.text()
-      if (!res.ok) throw new Error(text)
-
-      const data = JSON.parse(text)
-      if (!data.url) throw new Error("Checkout URL not returned")
-
-      window.location.href = data.url
-    } catch (err) {
-      console.error("PAYMENT ERROR:", err)
-      alert("Erro ao iniciar o pagamento")
-    }
-  }
+    run();
+  }, [sessionId, processed]);
 
   const downloadPdf = async () => {
     try {
+      if (!report) return;
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PDF_SERVICE_URL}/generate-pdf`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(report)
+          body: JSON.stringify(report),
         }
-      )
+      );
 
       if (!res.ok) {
-        throw new Error("Erro ao gerar PDF")
+        throw new Error("Erro ao gerar PDF");
       }
 
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-
-      const a = document.createElement("a")
-      a.href = url
-      a.download = "relatorio-premium.pdf"
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
-
-      window.URL.revokeObjectURL(url)
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "relatorio-premium.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error(err)
-      alert("Erro ao baixar o PDF")
+      alert("Erro ao baixar o PDF");
     }
-  }
+  };
 
   if (loading) {
-    return <p style={{ textAlign: "center", marginTop: 40 }}>Loading...</p>
+    return <p style={{ textAlign: "center", marginTop: 40 }}>Loading...</p>;
   }
 
   if (locked) {
     return (
       <div style={{ textAlign: "center", marginTop: 40 }}>
-        <p>Relatório premium bloqueado</p>
-        <button onClick={startPayment}>
-          Desbloquear relatório premium
-        </button>
+        <p>Relatório premium bloqueado.</p>
+        <p>Conclua o pagamento para liberar o acesso.</p>
       </div>
-    )
+    );
   }
 
   if (!report) {
-    return <p style={{ textAlign: "center" }}>No data available.</p>
+    return <p style={{ textAlign: "center" }}>No data available.</p>;
   }
 
   return (
@@ -183,12 +141,12 @@ export default function PremiumPage() {
           border: "none",
           cursor: "pointer",
           backgroundColor: "#111",
-          color: "#fff"
+          color: "#fff",
         }}
         onClick={downloadPdf}
       >
         📄 Baixar relatório em PDF
       </button>
     </div>
-  )
+  );
 }
